@@ -34,8 +34,8 @@ if (os.path.exists('senhapadrao.txt')==True): # se o arquivo.txt da senha existi
         senhapadrao = pd.read() # armazenando na variável senhapadrao
 else:
     with open('senhapadrao.txt', 'w') as pd:
-        pd.write('ideflor@3')
-        senhapadrao = 'ideflor@3'
+        pd.write('senhapadrao')
+        senhapadrao = 'senhapadrao'
 
 #arquivo de Setores
 
