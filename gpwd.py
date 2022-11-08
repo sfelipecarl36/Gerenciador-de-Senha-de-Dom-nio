@@ -45,13 +45,13 @@ else:
         setores = 'setor1,setor2,setor3,setor4,setor5,setor6'.split(',')
 
 if darkdetect.isDark(): #se windows em dark mode...
-    tema = 'forest-dark' #tema do programa dark
-    #tema = 'azure-dark' #tema do programa dark
+    #tema = 'forest-dark' #tema do programa dark
+    tema = 'azure-dark' #tema do programa dark
     #ttk.Style().theme_use('forest-dark')
     logo = 'logo_p.png' #logo dark 
 else:  #se tema windows light
-    tema = 'forest-light' #tema claro
-    #tema = 'azure-light' #tema claro
+    #tema = 'forest-light' #tema claro
+    tema = 'azure-light' #tema claro
     #ttk.Style().theme_use('forest-light')
     logo = 'logo_b.png' #logo clara
 
