@@ -1,8 +1,7 @@
 # coding=UTF-8
 
-from ast import Delete
+import sv_ttk
 import subprocess
-import time
 from tkinter import ACTIVE, END, Listbox, Tk, TkVersion
 from tkinter import ttk
 import tkinter as tk
@@ -10,15 +9,13 @@ import os.path
 import socket
 from tkinter import Toplevel
 from tkinter import PhotoImage
-from tracemalloc import start
 
 import darkdetect
-import sv_ttk
 import getpass
 import platform
 
 nomeapp = 'Gerenciador de Password' #nome que será exibido na janela
-versao = 'v1.1.6' #Versão do Programa
+versao = 'v1.1.7' #Versão do Programa
 
 list_users = []
 list_users3 = []
@@ -48,22 +45,24 @@ else:
         setores = 'setor1,setor2,setor3,setor4,setor5,setor6'.split(',')
 
 if darkdetect.isDark(): #se windows em dark mode...
-    tema = 'dark' #tema do programa dark
+    tema = 'forest-dark' #tema do programa dark
+    #tema = 'azure-dark' #tema do programa dark
+    #ttk.Style().theme_use('forest-dark')
     logo = 'logo_p.png' #logo dark 
 else:  #se tema windows light
-    tema = 'light' #tema claro
+    tema = 'forest-light' #tema claro
+    #tema = 'azure-light' #tema claro
+    #ttk.Style().theme_use('forest-light')
     logo = 'logo_b.png' #logo clara
 
 def detectDark():
     if darkdetect.isDark(): #se windows em dark mode...
-        tema = 'dark' #tema do programa dark
         logo = 'logo_p.png' #logo dark 
-        sv_ttk.set_theme(tema)
+        ttk.Style().theme_use(tema)
         img = PhotoImage(file=logo)
     else:  #se tema windows light
-        tema = 'light' #tema claro
         logo = 'logo_b.png' #logo clara
-        sv_ttk.set_theme(tema)
+        ttk.Style().theme_use(tema)
         img = PhotoImage(file=logo)
 
 entrys = {}
@@ -409,7 +408,7 @@ def localizarPc(pc):
             tree_view2.delete(item)
 
 def buscarPc():
-    text = entryCota.get().strip()
+    text = entryHost.get().strip()
 
     namesearch = 0
 
@@ -498,8 +497,8 @@ def escolheList(e):
 
 def escolheList2(e):
     if list_search2.curselection() != ():
-        entryCota.delete(0, END)
-        entryCota.insert(0, list_search2.get(list_search2.curselection()))
+        entryHost.delete(0, END)
+        entryHost.insert(0, list_search2.get(list_search2.curselection()))
 
 def listBaixo():
     list_search.focus_set()
@@ -509,7 +508,7 @@ def listBaixo():
 janela.title(nomeapp+' '+versao)
 janela.iconbitmap('icon.ico')
 
-janela_width = 790
+janela_width = 900
 janela_height = 770
 
 device_width = janela.winfo_screenwidth()/2
@@ -524,16 +523,16 @@ device_height = int(device_height)
 janela.geometry(str(janela_width)+'x'+str(janela_height)+'+'+str(device_width)+'+'+str(device_height))
 
 janela.resizable(True,True)
-#janela['bg'] = '#f8f8f8'
+#janela['bg'] = '#ffffff'
 
 frame = ttk.Frame(janela, padding=0)
-frame.place(relx=0.515,rely=0.33,anchor='center')
+frame.place(relx=0.515,rely=0.27,anchor='center')
 
-frameCota = ttk.Frame(janela, padding=0)
-frameCota.place(relx=0.5,rely=0.73,anchor='center')
+frameHost = ttk.Frame(janela, padding=0)
+frameHost.place(relx=0.5,rely=0.70,anchor='center')
 
 frameBt = ttk.Frame(janela, padding=0)
-frameBt.place(relx=0.5,rely=0.66,anchor='center')
+frameBt.place(relx=0.5,rely=0.63,anchor='center')
 
 frame_info = ttk.Frame(janela, padding=15)
 
@@ -543,10 +542,10 @@ label_img = ttk.Label(janela, image=img,borderwidth=0,border=0)
 labeluser = ttk.Label(frame_info,text='Usuário: '+user+' | ').grid(column=0,row=0)
 labelpc = ttk.Label(frame_info ,text='HostName: '+pc).grid(column=1,row=0)
 
-frame_info.place(relx=0.5,rely=0.97,anchor='center')
-label_img.place(relx = 0.5,rely = 0.13,anchor = 'center')
+frame_info.place(relx=0.5,rely=0.96,anchor='center')
+label_img.place(relx = 0.5,rely = 0.11,anchor = 'center')
 
-label = ttk.Label(frame, text='Digite o usuário do domínio:',font= ('Arial 14')).grid(column=0, columnspan=2, row=1, pady=3)
+label = ttk.Label(frame, text='Digite o usuário do domínio:',font= ('Arial 14')).grid(column=0, columnspan=2, row=1, pady=0)
 
 entry = ttk.Entry(frame, textvariable=usuario, width=25, font='Arial 14')  # type: ignore
 entry.grid(column=0, columnspan=2, row=2, pady=15, ipadx=3)
@@ -554,27 +553,27 @@ entry.bind("<KeyRelease>", (lambda event: atualizaSearch(entry.get())))
 entry.bind("<Return>", (lambda event: localizar(entry.get())))
 entry.bind('<Right>', (lambda event: localizar(entry.get())))
 
-entryCota = ttk.Entry(frameCota, width=17, font='Arial 14')
-entryCota.grid(column=0, columnspan=2, row=2, pady=15, ipadx=3)
-entryCota.bind("<Return>", (lambda event: localizarPc(entryCota.get())))
+entryHost = ttk.Entry(frameHost, width=17, font='Arial 14')
+entryHost.grid(column=0, columnspan=2, row=2, pady=15, ipadx=3)
+entryHost.bind("<Return>", (lambda event: localizarPc(entryHost.get())))
 
-buttonCota = ttk.Button(frameCota,text='Pesquisar Host',style="Accent.TButton",
+buttonHost = ttk.Button(frameHost,text='Pesquisar Host',style="Accent.TButton",
 command=lambda: buscarPc())
-buttonCota.grid(column=2, row=2, padx=5) #botão lupa
-buttonCota.bind("<Return>", (lambda event: buscarPc()))
-entryCota.bind("<KeyRelease>", (lambda event: localizarPc(entryCota.get())))
-entryCota.bind("<Return>", (lambda event: buscarPc()))
+buttonHost.grid(column=2, row=2, padx=5) #botão lupa
+buttonHost.bind("<Return>", (lambda event: buscarPc()))
+entryHost.bind("<KeyRelease>", (lambda event: localizarPc(entryHost.get())))
+entryHost.bind("<Return>", (lambda event: buscarPc()))
 
 buttonL = ttk.Button(frame,width=2,text='➜',style="Accent.TButton", 
 command=lambda: localizar(entry.get()))
 buttonL.grid(column=2, row=2, padx=5) #botão lupa
 buttonL.bind("<Return>", (lambda event: localizar(entry.get())))
 
-button = ttk.Button(frameBt,width=18,text='Resetar Senha',command=lambda: resetSenha(entry.get()))
+button = ttk.Button(frameBt,width=18,text='Resetar Senha',style="Accent.TButton",command=lambda: resetSenha(entry.get()))
 button.bind("<Return>", (lambda event: resetSenha(entry.get())))
 button.grid(column=0, row=5,pady=1,ipady=3, padx=3) #botão reset
 
-button2 = ttk.Button(frameBt,width=18,text='Desbloquear Usuário', command=lambda: unlockSenha(entry.get()))
+button2 = ttk.Button(frameBt,width=18,text='Desbloquear Usuário', style="Accent.TButton",command=lambda: unlockSenha(entry.get()))
 button2.bind("<Return>", (lambda event: unlockSenha(entry.get())))
 button2.grid(column=1, row=5,pady=1,ipady=3, padx=3) #botão unlock
 
@@ -587,14 +586,14 @@ def focalizarEntry():
     if(indexSearch==0):
         entry.focus_set()
 
-list_search.place(relx = 0.503,rely = 0.47,anchor = 'center')
+list_search.place(relx = 0.503,rely = 0.41,anchor = 'center')
 list_search.bind('<<ListboxSelect>>', escolheList)
 list_search.bind('<Right>', (lambda event: localizar(entry.get())))
 list_search.bind('<Up>', (lambda event: focalizarEntry()))
 
 #ListBox 2
 
-list_search2.place(relx = 0.503,rely = 0.82,anchor = 'center')
+list_search2.place(relx = 0.503,rely = 0.79,anchor = 'center')
 list_search2.bind('<<ListboxSelect>>', escolheList2)
 
 #Tabela Info Usuário
@@ -609,13 +608,13 @@ tree_view.heading('defsenha', text='Última Definição de Senha')
 tree_view.heading('expira', text='Senha Expira')
 
 tree_view.column('nome', width=200)
-tree_view.column('ativo', width=50)
-tree_view.column('logon', width=110)
-tree_view.column('grupo', width=85)
+tree_view.column('ativo', width=60)
+tree_view.column('logon', width=120)
+tree_view.column('grupo', width=90)
 tree_view.column('defsenha', width=170)
-tree_view.column('expira', width=110)
+tree_view.column('expira', width=120)
 
-tree_view.place(relx=0.5,rely=0.59,anchor='center')
+tree_view.place(relx=0.5,rely=0.54,anchor='center')
 #tree_view.bind('<<TreeviewSelect>>', def():)
 
 #Tabela Info Host
@@ -630,17 +629,26 @@ tree_view2.column('hostname', width=150)
 tree_view2.column('ip', width=150)
 tree_view2.column('user', width=150)
 
-tree_view2.place(relx=0.5,rely=0.91,anchor='center')
+tree_view2.place(relx=0.5,rely=0.88,anchor='center')
 
 janela.bind("<Escape>", (lambda event: janela.destroy()))
-janela.bind('<FocusIn>', (lambda event: detectDark()))
+#janela.bind('<FocusIn>', (lambda event: detectDark()))
 entry.bind('<Down>', (lambda event: listBaixo()))
 
-#janela.tk.call("source", "azure.tcl")
-sv_ttk.set_theme(tema)
+#janela.option_add("*tearOff", False) # This is always a good idea
 
 #janela.after(1, lambda: janela.focus_force())
 #janela.wm_attributes("-topmost", 1)
+janela.tk.call('source', 'forest-light.tcl')
+janela.tk.call('source', 'forest-dark.tcl')
+janela.tk.call("source", "azure.tcl")
+janela.tk.call("set_theme", "light")
+janela.tk.call("set_theme", "dark")
+print(tema)
+if tema=='forest-light' or tema=='azure-light':
+    sv_ttk.set_theme('light')
+detectDark()
+
 entry.focus()
 janela.mainloop()
 

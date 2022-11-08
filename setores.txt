@@ -1,0 +1,1 @@
+setor1,setor2,setor3,setor4,setor5,setor6
