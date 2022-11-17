@@ -14,14 +14,13 @@ desbloquear usuários do domínio, resetar senhas e mais apenas com pequenos cli
 senhapadrao
 ```
 
+### A coluna grupos é definida pelo arquivo setores.txt, o qual
+### deve conter os grupos de cada departamento (Exemplo: ASCOM)
+
 > setores.txt
 ```
 setor1,setor2,setor3,setor4,setor5,setor6,Estagiarios
 ```
-
-### A coluna grupos é definida pelo arquivo setores.txt, o qual
-### deve conter os grupos de cada departamento (Exemplo: ASCOM)
-#### Ela pode ser alterada para a senha desejada a ser usada no botão de Resetar o Usuário
 
 ### O Logo pode ser alterado, apenas substituindo as imagens logo_b.png
 ### e também a logo_p.png, onde a logo_b é quando o Windows usa tema claro
